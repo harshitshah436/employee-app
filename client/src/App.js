@@ -24,7 +24,7 @@ const App = () => {
 
   const deleteEmployee = (id) => {
     setUpdate(false)
-    setEmployees(employees.filter((employee) => employee.id != id))
+    setEmployees(employees.filter((employee) => employee.id !== id))
   }
 
   const editRow = (employee) => {
