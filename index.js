@@ -7,24 +7,30 @@ const app = express();
 
 app.set("port", process.env.PORT || 3001);
 
-//Handles all node middlewares
+// Handles all node middlewares
 app.use(require('./helper/middleware'));
 
-/*==================START APP Code==================*/
-var employeeRouter = require('./routes/employee');
+const db = require('./service/dbService');
+(async () => {
+  // Initiate db (node-persist storage)
+  await db.init();
 
-app.use('/api/employee', employeeRouter);
+  /*==================START APP Code==================*/
+  var employeeRouter = require('./routes/employeeRoute');
 
-// Express only serves static assets in production
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
-}
+  app.use('/api/employee', employeeRouter);
 
-app.listen(app.get("port"), () => {
-  console.log(`Find the server at: http://localhost:${app.get("port")}/`); // eslint-disable-line no-console
-});
-/*==================END==================*/
+  // Express only serves static assets in production
+  if (process.env.NODE_ENV === "production") {
+    app.use(express.static("client/build"));
+  }
 
-module.exports = { 
-  app 
+  app.listen(app.get("port"), () => {
+    console.log(`Find the server at: http://localhost:${app.get("port")}/`); // eslint-disable-line no-console
+  });
+  /*==================END==================*/
+})();
+
+module.exports = {
+  app
 };

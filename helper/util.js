@@ -1,12 +1,13 @@
 const request = require('request');
 const path = require('path');
+const { nanoid } = require('nanoid')
 
-function getDate() {
+getDate = () => {
   let date = new Date().toISOString().replace(/T/, ' ').replace(/Z/, '')
   return date;
 }
 
-function handleRequest(url, method) {
+handleRequest = (url, method) => {
   var reqOptions = {
     url: url,
     method: method,
@@ -31,7 +32,13 @@ function handleRequest(url, method) {
   })
 }
 
+getUniqueNanoId = () => {
+  var uniqueId = nanoid(10);
+  return uniqueId;
+}
+
 module.exports = {
   getDate,
-  handleRequest
+  handleRequest,
+  getUniqueNanoId
 }
