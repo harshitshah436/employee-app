@@ -13,13 +13,13 @@ const EmployeeTable = (props) => (
     <tbody>
       {props.employees.length > 0 ? (
         props.employees.map((employee) => (
-          <tr key={employee.id}>
+          <tr key={employee._id}>
             <td>{employee.firstname}</td>
             <td>{employee.lastname}</td>
             <td>{employee.hiredate}</td>
             <td>
-              <button onClick={() => { props.editRow(employee) }} className="button muted-button">Edit</button>
-              <button onClick={() => props.deleteEmployee(employee.id)} className="button muted-button">Delete</button>
+              <button onClick={() => props.editEmployee(employee)} className="button muted-button">Edit</button>
+              <button onClick={() => props.deleteEmployee(employee._id)} className="button muted-button">Delete</button>
             </td>
           </tr>
         ))

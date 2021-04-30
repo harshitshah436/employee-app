@@ -18,7 +18,7 @@ const EditEmployeeForm = (props) => {
       onSubmit={(event) => {
         event.preventDefault()
 
-        props.updateEmployee(employee.id, employee)
+        props.updateEmployee(employee._id, employee)
       }}
     >
       <label>First Name</label>

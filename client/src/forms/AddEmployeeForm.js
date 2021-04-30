@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 const AddEmployeeForm = (props) => {
 
-  const initialFormState = { id: null, firstname: '', lastname: '', hiredate: '' }
+  const initialFormState = { firstname: '', lastname: '', hiredate: '' }
   const [employee, setEmployee] = useState(initialFormState)
 
   const handleInputChange = event => {

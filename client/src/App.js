@@ -1,45 +1,73 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import EmployeeTable from './tables/EmployeeTable'
 import AddEmployeeForm from './forms/AddEmployeeForm'
 import EditEmployeeForm from './forms/EditEmployeeForm'
+import EmployeeService from './services/EmployeeService'
 
 const App = () => {
 
-  const employeeData = [
-    { id: 1, firstname: 'John', lastname: 'Smith', hiredate: '2000-01-01' },
-    { id: 2, firstname: 'Joe', lastname: 'Biden', hiredate: '1989-01-01' },
-    { id: 3, firstname: 'Justin', lastname: 'Trudeau', hiredate: '1995-01-01' },
-  ]
-
-  const initialFormState = { id: null, firstname: '', lastname: '', hiredate: '' }
-
-  const [employees, setEmployees] = useState(employeeData)
+  const initialFormState = { firstname: '', lastname: '', hiredate: '' }
+  const [employees, setEmployees] = useState(initialFormState)
   const [update, setUpdate] = useState(false)
   const [currentEmployee, setCurrentEmployee] = useState(initialFormState)
 
-  const addEmployee = (employee) => {
-    employee.id = employees.length + 1
-    setEmployees([...employees, employee])
+  useEffect(() => {
+    getEmployees()
+  }, [])
+
+  const getEmployees = async () => {
+    let employees;
+    try {
+      let response = await EmployeeService.getAllEmployees();
+      employees = response.data;
+      setEmployees(employees);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  const deleteEmployee = (id) => {
+  const addEmployee = async (employee) => {
+    try {
+      let response = await EmployeeService.createEmployee(employee);
+      let employees = response.data;
+      setEmployees(employees);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const deleteEmployee = async (id) => {
+    setUpdate(false);
+    try {
+      let response = await EmployeeService.deleteEmployee(id);
+      let employees = response.data;
+      setEmployees(employees);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const updateEmployee = async (id, updatedEmployee) => {
     setUpdate(false)
-    setEmployees(employees.filter((employee) => employee.id !== id))
+    try {
+      console.log("DEBUG1: " + id);
+      console.log("DEBUG2: " + JSON.stringify(updatedEmployee));
+      let response = await EmployeeService.updateEmployee(id, updatedEmployee);
+      let employees = response.data;
+      setEmployees(employees);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  const editRow = (employee) => {
+  const editEmployee = (employee) => {
     setUpdate(true)
     setCurrentEmployee({
-      id: employee.id,
+      _id: employee._id,
       firstname: employee.firstname,
       lastname: employee.lastname,
       hiredate: employee.hiredate
     })
-  }
-
-  const updateEmployee = (id, updatedEmployee) => {
-    setUpdate(false)
-    setEmployees(employees.map(employee => (employee.id === id ? updatedEmployee : employee)))
   }
 
   return (
@@ -62,11 +90,10 @@ const App = () => {
               <AddEmployeeForm addEmployee={addEmployee} />
             </Fragment>
           )}
-
         </div>
         <div className="flex-large">
           <h2>View Employees</h2>
-          <EmployeeTable employees={employees} editRow={editRow} deleteEmployee={deleteEmployee} />
+          <EmployeeTable employees={employees} editEmployee={editEmployee} deleteEmployee={deleteEmployee} />
         </div>
       </div>
     </div>
