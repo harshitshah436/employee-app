@@ -3,6 +3,8 @@ const dbService = require('../service/dbService');
 const util = require('../helper/util');
 
 const router = express.Router();
+const quotesApi = "https://ron-swanson-quotes.herokuapp.com/v2"
+const jokeApi = "https://api.chucknorris.io"
 
 // GET /api/employee - get a list of employees
 router.get("/", async (req, res) => {
@@ -13,7 +15,17 @@ router.get("/", async (req, res) => {
 // POST /api/employee - create an employee
 router.post("/", async (req, res) => {
   let _id = util.getUniqueNanoId();
-  let response = await dbService.create(_id, req.body);
+  let employee = req.body;
+
+  let url = `${quotesApi}/quotes`;
+  let response = await util.handleRequest(url, "GET");
+  employee = { ...employee, quote: JSON.parse(response)[0] }
+
+  url = `${jokeApi}/jokes/random`;
+  response = await util.handleRequest(url, "GET");
+  employee = { ...employee, joke: JSON.parse(response).value }
+
+  response = await dbService.create(_id, employee);
   res.send(response);
 });
 
