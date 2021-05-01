@@ -4,10 +4,13 @@ const EmployeeTable = (props) => (
   <table>
     <thead>
       <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Hire Date</th>
-        <th>Actions</th>
+        <th style={{ width: "9%" }}>First Name</th>
+        <th style={{ width: "9%" }}>Last Name</th>
+        <th style={{ width: "9%" }}>Hire Date</th>
+        <th>Role</th>
+        <th>Favourite Quote</th>
+        <th>Favourite Joke</th>
+        <th style={{ width: "17%" }}></th>
       </tr>
     </thead>
     <tbody>
@@ -16,7 +19,10 @@ const EmployeeTable = (props) => (
           <tr key={employee._id}>
             <td>{employee.firstname}</td>
             <td>{employee.lastname}</td>
-            <td>{employee.hiredate}</td>
+            <td>{employee.hiredate.split('T')[0]}</td>
+            <td>{employee.role}</td>
+            <td>{employee.quote}</td>
+            <td>{employee.joke}</td>
             <td>
               <button onClick={() => props.editEmployee(employee)} className="button muted-button">Edit</button>
               <button onClick={() => props.deleteEmployee(employee._id)} className="button muted-button">Delete</button>
@@ -25,7 +31,7 @@ const EmployeeTable = (props) => (
         ))
       ) : (
         <tr>
-          <td colSpan={4}>No Employees</td>
+          <td colSpan={7}>No Employees</td>
         </tr>
       )}
     </tbody>

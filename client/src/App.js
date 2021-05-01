@@ -6,7 +6,7 @@ import EmployeeService from './services/EmployeeService'
 
 const App = () => {
 
-  const initialFormState = { firstname: '', lastname: '', hiredate: '' }
+  const initialFormState = { firstname: '', lastname: '', hiredate: null, role: '' }
   const [employees, setEmployees] = useState(initialFormState)
   const [update, setUpdate] = useState(false)
   const [currentEmployee, setCurrentEmployee] = useState(initialFormState)
@@ -50,8 +50,6 @@ const App = () => {
   const updateEmployee = async (id, updatedEmployee) => {
     setUpdate(false)
     try {
-      console.log("DEBUG1: " + id);
-      console.log("DEBUG2: " + JSON.stringify(updatedEmployee));
       let response = await EmployeeService.updateEmployee(id, updatedEmployee);
       let employees = response.data;
       setEmployees(employees);
@@ -66,7 +64,10 @@ const App = () => {
       _id: employee._id,
       firstname: employee.firstname,
       lastname: employee.lastname,
-      hiredate: employee.hiredate
+      hiredate: employee.hiredate,
+      role: employee.role,
+      quote: employee.quote,
+      joke: employee.joke
     })
   }
 
@@ -77,22 +78,25 @@ const App = () => {
         <div className="flex-large">
           {update ? (
             <Fragment>
-              <h2>Edit Employee</h2>
+              <h3>Edit Employee</h3>
               <EditEmployeeForm
                 setUpdate={setUpdate}
                 currentEmployee={currentEmployee}
                 updateEmployee={updateEmployee}
+                employees={employees}
               />
             </Fragment>
           ) : (
             <Fragment>
-              <h2>Add Employee</h2>
-              <AddEmployeeForm addEmployee={addEmployee} />
+              <h3>Add Employee</h3>
+              <AddEmployeeForm addEmployee={addEmployee} employees={employees} />
             </Fragment>
           )}
         </div>
+      </div>
+      <div className="flex-row">
         <div className="flex-large">
-          <h2>View Employees</h2>
+          <h3>View Employees</h3>
           <EmployeeTable employees={employees} editEmployee={editEmployee} deleteEmployee={deleteEmployee} />
         </div>
       </div>

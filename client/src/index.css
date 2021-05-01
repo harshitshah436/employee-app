@@ -1,4 +1,13 @@
 button, .button {
-	margin-bottom: 0 !important;
+	margin-bottom: 0;
 	margin-right: .5rem;
+}
+
+th, td {
+	text-align: center;
+	vertical-align: center;
+}
+
+label {
+	margin: 0
 }
