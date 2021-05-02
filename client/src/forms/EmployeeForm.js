@@ -1,28 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import DatePicker from "react-datepicker";
 
-const EditEmployeeForm = (props) => {
+const EmployeeForm = (props) => {
+  const initialFormState = { firstname: '', lastname: '', hiredate: null, role: '' }
   const [employee, setEmployee] = useState(props.currentEmployee)
-  
+
   useEffect(() => {
     setEmployee(props.currentEmployee)
   }, [props])
 
+
   const handleInputChange = (event) => {
     const { name, value } = event.target
-
-    if(name === "role" && value === "CEO") {
+    event.target.setCustomValidity("");
+    if (name === "role" && value === "CEO") {
       let foundEmployee = props.employees.find(emp => emp.role === value)
-      if(foundEmployee) {
+      if (foundEmployee) {
         event.target.setCustomValidity("Error: Only one employee can be a CEO. A CEO is already appointed.");
         event.target.reportValidity()
-      } else {
-        event.target.setCustomValidity(""); 
       }
-    } else {
-      event.target.setCustomValidity(""); 
     }
-
     setEmployee({ ...employee, [name]: value })
   }
 
@@ -30,8 +27,17 @@ const EditEmployeeForm = (props) => {
     <form
       onSubmit={(event) => {
         event.preventDefault()
+        if (!employee.firstname || !employee.lastname || !employee.hiredate || !employee.role) {
+          console.error("Error: Employee properties missing: (employee) - " + JSON.stringify(employee))
+          return
+        }
 
-        props.updateEmployee(employee._id, employee)
+        props.update ?
+          props.updateEmployee(employee._id, employee) :
+          props.addEmployee(employee)
+
+        setEmployee(initialFormState)
+        props.setCurrentEmployee(initialFormState)
       }}
     >
       <table>
@@ -54,7 +60,7 @@ const EditEmployeeForm = (props) => {
             <td><label>Hire Date</label></td>
             <td>
               <DatePicker
-                selected={new Date(employee.hiredate)}
+                selected={(props.update) ? new Date(employee.hiredate) : employee.hiredate}
                 onChange={date => { setEmployee({ ...employee, hiredate: date }) }}
                 dateFormat="yyyy-MM-dd"
                 minDate={new Date(60, 1)}
@@ -65,7 +71,7 @@ const EditEmployeeForm = (props) => {
                 showDisabledMonthNavigation
                 required={true}
                 name="hiredate"
-                value={new Date(employee.hiredate)}
+                value={(props.update) ? new Date(employee.hiredate) : employee.hiredate}
               />
             </td>
             <td><label>Role</label></td>
@@ -78,28 +84,24 @@ const EditEmployeeForm = (props) => {
                 <option value="LACKEY">LACKEY</option>
               </select>
             </td>
-            <td><button style={{ marginBottom: ".5rem" }}>Update Employee</button></td>
             <td>
-              <button style={{ marginBottom: ".5rem" }} onClick={() => props.setUpdate(false)} className="button muted-button">
-                Cancel
-              </button>
+              {
+                (props.update) ?
+                  <button style={{ marginBottom: ".5rem" }}>Update Employee</button> :
+                  <button style={{ marginBottom: ".5rem" }}>Add Employee</button>
+              }
+            </td>
+            <td>
+              {
+                (props.update) ?
+                  <button style={{ marginBottom: ".5rem" }} onClick={() => { props.setUpdate(false); props.setCurrentEmployee(initialFormState) }} className="button muted-button">Cancel</button> : null
+              }
             </td>
           </tr>
         </tbody>
       </table>
-
-      {/* <label>First Name</label>
-      <input type="text" name="firstname" value={employee.firstname} onChange={handleInputChange} />
-      <label>Last Name</label>
-      <input type="text" name="lastname" value={employee.lastname} onChange={handleInputChange} />
-      <label>Hire Date</label>
-      <input type="text" name="hiredate" value={employee.hiredate} onChange={handleInputChange} />
-      <button>Update Employee</button>
-      <button onClick={() => props.setUpdate(false)} className="button muted-button">
-        Cancel
-      </button> */}
     </form>
   )
 }
 
-export default EditEmployeeForm
+export default EmployeeForm

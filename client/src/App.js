@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import EmployeeTable from './tables/EmployeeTable'
-import AddEmployeeForm from './forms/AddEmployeeForm'
-import EditEmployeeForm from './forms/EditEmployeeForm'
+import EmployeeForm from './forms/EmployeeForm'
 import EmployeeService from './services/EmployeeService'
 
 const App = () => {
@@ -38,6 +37,7 @@ const App = () => {
 
   const deleteEmployee = async (id) => {
     setUpdate(false);
+    setCurrentEmployee(initialFormState);
     try {
       let response = await EmployeeService.deleteEmployee(id);
       let employees = response.data;
@@ -49,6 +49,7 @@ const App = () => {
 
   const updateEmployee = async (id, updatedEmployee) => {
     setUpdate(false)
+    setCurrentEmployee(initialFormState);
     try {
       let response = await EmployeeService.updateEmployee(id, updatedEmployee);
       let employees = response.data;
@@ -76,22 +77,20 @@ const App = () => {
       <h1>Employee App</h1>
       <div className="flex-row">
         <div className="flex-large">
-          {update ? (
-            <Fragment>
-              <h3>Edit Employee</h3>
-              <EditEmployeeForm
-                setUpdate={setUpdate}
-                currentEmployee={currentEmployee}
-                updateEmployee={updateEmployee}
-                employees={employees}
-              />
-            </Fragment>
-          ) : (
-            <Fragment>
-              <h3>Add Employee</h3>
-              <AddEmployeeForm addEmployee={addEmployee} employees={employees} />
-            </Fragment>
-          )}
+          <Fragment>
+            {
+              update ? <h3>Edit Employee</h3> : <h3>Add Employee</h3>
+            }
+            <EmployeeForm
+              addEmployee={addEmployee}
+              setUpdate={setUpdate}
+              updateEmployee={updateEmployee}
+              setCurrentEmployee={setCurrentEmployee}
+              employees={employees}
+              update={update}
+              currentEmployee={currentEmployee}
+            />
+          </Fragment>
         </div>
       </div>
       <div className="flex-row">
