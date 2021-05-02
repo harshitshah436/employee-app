@@ -2,7 +2,7 @@ import axios from 'axios'
 
 var api = () => {
   return axios.create({
-    baseURL: 'http://localhost:3001'
+    baseURL: `${process.env.REACT_APP_API_SERVER}`
   })
 }
 
