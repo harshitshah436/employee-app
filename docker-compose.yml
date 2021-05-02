@@ -1,0 +1,22 @@
+version: '3'
+services:
+  nodejs:
+    build: .
+    image: employee-app-nodejs:latest
+    env_file:
+      - .env
+    ports:
+      - "3001:3001"
+    volumes:
+      - "${NODE_PERSIST_DATA_DIR}:/app/${NODE_PERSIST_DATA_DIR}"
+    container_name: employee-app-nodejs
+  react:
+    build: ./client
+    image: employee-app-reactjs:latest
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    container_name: employee-app-reactjs
+    environment:
+      WAIT_HOSTS: nodejs:3001

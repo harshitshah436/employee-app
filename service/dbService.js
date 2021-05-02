@@ -4,7 +4,7 @@ const collection = 'employees';
 
 dbService.init = async () => {
   await storage.init({
-    dir: './db'
+    dir: process.env.NODE_PERSIST_DATA_DIR
   });
 }
 
