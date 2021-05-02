@@ -10,7 +10,8 @@
     "nanoid": "^3.1.22",
     "node-persist": "^3.1.0",
     "path": "^0.12.7",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "swagger-ui-express": "^4.1.6"
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",

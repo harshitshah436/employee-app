@@ -10,6 +10,11 @@ app.set("port", process.env.PORT || 3001);
 // Handles all node middlewares
 app.use(require('./helper/middleware'));
 
+// Generate Swagger API docs
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 const db = require('./service/dbService');
 (async () => {
   // Initiate db (node-persist storage)

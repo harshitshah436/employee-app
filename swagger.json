@@ -1,0 +1,232 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Employee API",
+    "description" : "This is an Employee App API to perform CRUD operations on Employee resource.\n",
+    "version" : "1.0.0",
+    "contact" : {
+      "email" : "harshitshah436@yahoo.com"
+    }
+  },
+  "servers" : [ {
+    "description" : "SwaggerHub API Auto Mocking",
+    "url" : "https://virtserver.swaggerhub.com/harshit6/EmployeeAPI/1.0.0"
+  }, {
+    "description" : "Employee API root URL",
+    "url" : "http://localhost:3001/api/"
+  } ],
+  "tags" : [ {
+    "name" : "employee",
+    "description" : "Employee resource calls"
+  } ],
+  "paths" : {
+    "/employee" : {
+      "get" : {
+        "tags" : [ "employee" ],
+        "summary" : "get a list of employees",
+        "description" : "Gets a list of employees from the datastore.\n",
+        "operationId" : "findAllEmployees",
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/200Success"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/400BadRequest"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "employee" ],
+        "summary" : "create an employee resource",
+        "description" : "Creates  an employee resource in the datastore\n",
+        "operationId" : "createEmployee",
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/Employee"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/200Success"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/400BadRequest"
+          }
+        }
+      }
+    },
+    "/employee/{id}" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "id",
+        "schema" : {
+          "type" : "string"
+        },
+        "description" : "The unique employee ID.",
+        "required" : true
+      } ],
+      "get" : {
+        "tags" : [ "employee" ],
+        "summary" : "get an employee by :id",
+        "description" : "Gets an employee record matching with the given _id\n",
+        "operationId" : "findOneEmployee",
+        "responses" : {
+          "200" : {
+            "description" : "get an employee record",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Employee"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "employee" ],
+        "summary" : "update an employee by :id",
+        "description" : "Updates an employee record matching with the given _id or create a new one\n",
+        "operationId" : "updateEmployee",
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/EmployeeFull"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/200Success"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/400BadRequest"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "employee" ],
+        "summary" : "delete an employee by :id",
+        "description" : "Deletes an employee record matching with the given _id (unique nanoID)\n",
+        "operationId" : "deleteEmployee",
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/200Success"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/400BadRequest"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Employee" : {
+        "type" : "object",
+        "required" : [ "_id", "firstname", "lastname", "hiredate", "role" ],
+        "properties" : {
+          "_id" : {
+            "type" : "string",
+            "format" : "nanoid",
+            "example" : "qe4Y9Wl0h4"
+          },
+          "firstname" : {
+            "type" : "string",
+            "example" : "John"
+          },
+          "lastname" : {
+            "type" : "string",
+            "example" : "Smith"
+          },
+          "hiredate" : {
+            "type" : "string",
+            "description" : "date in yyyy-MM-dd format in the UI and datepicker. For datastore only in ISO format",
+            "format" : "date-time",
+            "example" : "2017-01-11T05:00:00.000Z"
+          },
+          "role" : {
+            "type" : "string",
+            "description" : "4 positions supported: CEO, VP, MANAGER, LACKEY. <br>\nOnly one employee can be CEO.\n",
+            "example" : "MANAGER"
+          },
+          "quote" : {
+            "type" : "string",
+            "description" : "Radnomly fetches a favorite quote from a third-party party API",
+            "example" : "I believe luck is a concept invented by the weak to explain their failures."
+          },
+          "joke" : {
+            "type" : "string",
+            "description" : "Radnomly fetches a favorite joke from a third-party party API",
+            "example" : "Chuck Norris can play slide guitar with a beer bottle. Or, failing that, your face."
+          }
+        }
+      },
+      "EmployeeUIPayload" : {
+        "type" : "object",
+        "description" : "From UI payload, only following fields are required. 'quote' and 'joke' will be added automatically from the API using third-party APIs.\n",
+        "required" : [ "firstname", "lastname", "hiredate", "role" ],
+        "properties" : {
+          "firstname" : {
+            "type" : "string",
+            "example" : "John"
+          },
+          "lastname" : {
+            "type" : "string",
+            "example" : "Smith"
+          },
+          "hiredate" : {
+            "type" : "string",
+            "description" : "date in yyyy-MM-dd format in the UI and datepicker. For datastore only in ISO format",
+            "format" : "date-time",
+            "example" : "2017-01-11T05:00:00.000Z"
+          },
+          "role" : {
+            "type" : "string",
+            "description" : "4 positions supported: CEO, VP, MANAGER, LACKEY. <br>\nOnly one employee can be CEO.\n",
+            "example" : "MANAGER"
+          }
+        }
+      }
+    },
+    "requestBodies" : {
+      "Employee" : {
+        "description" : "Employee payload from UI",
+        "required" : true,
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/EmployeeUIPayload"
+            }
+          }
+        }
+      },
+      "EmployeeFull" : {
+        "description" : "Employee payload from UI",
+        "required" : true,
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Employee"
+            }
+          }
+        }
+      }
+    },
+    "responses" : {
+      "200Success" : {
+        "description" : "list of all employees",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/components/schemas/Employee"
+              }
+            }
+          }
+        }
+      },
+      "400BadRequest" : {
+        "description" : "bad input parameter"
+      }
+    }
+  }
+}
