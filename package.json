@@ -15,13 +15,16 @@
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "nodemon index.js",
+    "server": "npm test && nodemon index.js",
     "client": "node start-client.js",
     "lint": "eslint .",
     "test": "mocha --exit"
   },
   "devDependencies": {
+    "chai": "^4.3.4",
     "concurrently": "^6.0.2",
-    "nodemon": "^2.0.7"
+    "mocha": "^8.3.2",
+    "nodemon": "^2.0.7",
+    "supertest": "^6.1.3"
   }
 }
