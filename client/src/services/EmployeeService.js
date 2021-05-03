@@ -1,6 +1,5 @@
 import api from './Api'
 
-
 var getAllEmployees = () => {
   return api().get('/api/employee')
 }

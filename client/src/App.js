@@ -10,6 +10,9 @@ const App = () => {
   const [update, setUpdate] = useState(false)
   const [currentEmployee, setCurrentEmployee] = useState(initialFormState)
 
+  /**
+   * useEffect hook to get a list of employees
+   */
   useEffect(() => {
     getEmployees()
   }, [])

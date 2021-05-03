@@ -2,11 +2,17 @@ const request = require('request');
 const path = require('path');
 const { nanoid } = require('nanoid')
 
+/**
+ * Get a current date.
+ */
 getDate = () => {
   let date = new Date().toISOString().replace(/T/, ' ').replace(/Z/, '')
   return date;
 }
 
+/**
+ * This method handles http requests.
+ */
 handleRequest = (url, method) => {
   var reqOptions = {
     url: url,
@@ -32,6 +38,9 @@ handleRequest = (url, method) => {
   })
 }
 
+/**
+ * Generate a unique id of size 10.
+ */
 getUniqueNanoId = () => {
   var uniqueId = nanoid(10);
   return uniqueId;

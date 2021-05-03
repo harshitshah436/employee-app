@@ -7,15 +7,15 @@ This project provides backend and frontend applications to manage employees.
 ### Application functions
 
 - The home page lists all available employees from the datastore. Also, it provided a form to add a new employee.
--  While creating a new Employee, only firstname, lastname, hiredate and role should be provided and the request is sent to the backend Employee API.
+-  While creating a new Employee, only `firstname`, `lastname`, `hiredate` and `role` should be provided and the request is sent to the backend Employee API.
 - Employee API adds a quote and a joke for the create employee request using external quotes and jokes APIs.
 - Also, field validations are implemented such as hiredate (current or past - no future dates), required fields, and only one CEO possible.
-- Employee 'Edit' and 'Delete' functionalities are also avaiable.
-- All records are stored in a local datastore. Storage is persistent using node-persist npm package.
+- Employee 'Edit' and 'Delete' functionalities are also available.
+- All records are stored in a local datastore. Storage is persistent using `node-persist` npm package.
 
 ### Technologies used
 
-- NodeJS - backend/server app provides a REST API using thee xpress router and node-persist storage
+- NodeJS - backend/server app provides a REST API using the express router and node-persist storage
 - ReactJS - frontend/client app lists existing employees and provides UI to perform CRUD operations using React Hooks
 
 ## Getting Started
@@ -47,10 +47,10 @@ npm start
 
 ##### Explanation
 
-- `npm ci` installs npm packages and create `node_modules` directory for both server and client apps. If `npm ci` gives any dependency error, use `npm install` command instead of it.
+- `npm ci` installs npm packages and creates `node_modules` directory for both server and client apps. If `npm ci` gives any dependency error, use the `npm install` command instead of it.
 - `npm start` command works as below for this application:
     - Concurrently starts NodeJS (server) and ReactJS (client) applications.
-    - NodeJS server application first runs unit tests before starting the server on the port `3001`.
+    - NodeJS server application first runs unit tests before starting the server on port `3001`.
     - ReactJS client application runs on the port `3000`.
 - Once all steps are completed successfully, our Employee App is launched at http://localhost:3000
 - API Documentation (Swagger UI) is available at http://localhost:3001/api-docs
@@ -89,7 +89,7 @@ docker-compose up --build
 
 ## Unit tests
 
-Using `mocha`, `chai` and `supertest` npm packages, created unit tests for the Employee API.
+Using `mocha`, `chai`, and `supertest` npm packages, created unit tests for the Employee API.
 
 In the project root directory, run: `npm test`
 
